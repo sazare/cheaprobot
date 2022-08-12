@@ -1,0 +1,21 @@
+plan
+
+Environ <--> Sensor(a) --------------> Fact(Wff)(b)
+　↑　　　　　　　　　　　　　　　　　　　↓　　　
+　↑　　　　　　　　　　　　　　　　　　　↓　　　
+Mecanique(a) <---　Desire(Wff)(b) <--- Prover　<---- Knowledge(Wff)(c)
+
+
+(a)s will be grow. The growth of Sensor expands Fact and Knowledge, The growth of Mechanique expands the power and precise of affecting over the Environment.
+(b)s are wff based of some predicates will change according to the growth.
+  Desire is a wff experss whole activities of the child. It activates the Mecanique for the desire.
+  Fact is wffs express ovserved fact from Envirionment.
+Prover make a proof of Desire. It will be a instance of the predicate form of desire.
+The desire form express whole action of the child.
+
+(a) will be grow. It means that the fact and the desire will be more complex.
+
+The prover make proofs restricted patten 'Fact --> Desire'.
+
+(c) the Knowledge will be developed based on the cycle. The cycle Environ -> Sensor -> Prover ->Mecha -> Environ is used for learning the Knowlwdge of the relation of the envirion and child(oneself).
+
