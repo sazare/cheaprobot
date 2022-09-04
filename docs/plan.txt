@@ -1,21 +1,54 @@
-plan
+2022/08/31 a plan
+0. 感覚器と運動器官が協調して成長する。
+0.1. 成長のステップごとのシステムを作ってみて、それらをつなぐ変化として成長を見られるのではないか。
+0.1.1. P0: 出産直後から二、三日。
+特徴: 体外についての知覚はほとんどない。体内の変化。外部操作としては、「泣く」と「排泄」と「飲乳」のみ。
 
-Environ <--> Sensor(a) --------------> Fact(Wff)(b)
-　↑　　　　　　　　　　　　　　　　　　　↓　　　
-　↑　　　　　　　　　　　　　　　　　　　↓　　　
-Mecanique(a) <---　Desire(Wff)(b) <--- Prover　<---- Knowledge(Wff)(c)
+1. 対象環境は2つ
+1.1. 体内
+1.2. 体外
+
+2. 行動シーケンス
+2.1. 空腹
+センサー=> [空腹] => {苦} => 緊張(close)、全身 => 泣く
+
+泣くプロセスは、{苦} => 緊張 => <泣く>なので、勉強の必要がない基本動作のようだ。
+
+・誕生直後の幼児にできること?
+ (1) 体の細かい使い方はまだわからない(知覚と動作の統合ができていない)
+ (2) 五感は未完成で、わかるのは「苦」と「楽/快」の違い。
+　特に、最初は「苦」が行動のトリガーとなる。
+　たぶん、最初にできるのは、体を緊張させるか弛緩させるかであり、全身を緊張させると「泣く」ができる。
+　弛緩は、「排尿」と「排便」のactionだと思う。
+　外から見える行動としては「笑う」が弛緩のようだが、それはある程度、体の調整ができないと笑えない。
+
+　つまり、胎児にとってはこの世界は「苦しみ」の連続であり、「泣く」しかできないのである。
+　何者かがその「苦しみ」の原因を取り除いてくれることがある。
+　いずれ感じられるようになる他者と、その「苦しみの除去」が関連づけられたとき「親」というより「保護者」が認識できるのではないか。
+
+　
 
 
-(a)s will be grow. The growth of Sensor expands Fact and Knowledge, The growth of Mechanique expands the power and precise of affecting over the Environment.
-(b)s are wff based of some predicates will change according to the growth.
-  Desire is a wff experss whole activities of the child. It activates the Mecanique for the desire.
-  Fact is wffs express ovserved fact from Envirionment.
-Prover make a proof of Desire. It will be a instance of the predicate form of desire.
-The desire form express whole action of the child.
+2.2. 排便
+センサー=> [尿意] => {苦} => 弛緩(open)、全身 => 排尿
+        => [尿意]消失 => {苦}消失 
+センサー=> [お尻濡れている] => [違和感] => {苦} => 緊張(close)、全身 => 泣く
+外部 => [おむつ交換] => <濡れの解消> => {苦}の消滅 => 泣くの終了
+　?? 胎内ではずっと濡れていたので、お尻が濡れていても不愉快ではないはず。
+　?? おしっこでは泣かないのではないか?
+  ?? おしっこは意図しないとできないのか、自動的にできるのか?
+　　 「トイレでおしっこをする」は教えるので、無自覚にでてしまうのかも。
 
-(a) will be grow. It means that the fact and the desire will be more complex.
+センサー=> [便意] => {苦} => 弛緩(open)、全身 => 排便
+        => [便意]消失 => {苦}消失 
+センサー=> [お尻濡れている] => [違和感] => {苦} => 緊張(close)、全身 => 泣く
+　?? 胎内ではずっと濡れていたので、お尻が濡れていても不愉快ではないはず。
+　?? うんちの場合は、排便に力が必要で、無自覚にはできないのかもしれない。
+　　　乳によって育つ間、大便はそんなに硬くないのではないか??
 
-The prover make proofs restricted patten 'Fact --> Desire'.
+???　便や尿については、不明点が多い。
 
-(c) the Knowledge will be developed based on the cycle. The cycle Environ -> Sensor -> Prover ->Mecha -> Environ is used for learning the Knowlwdge of the relation of the envirion and child(oneself).
+
+
+2.3. 排尿
 
