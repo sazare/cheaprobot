@@ -67,34 +67,36 @@
 ;;;2 お腹(体内)   空腹
 ;;;3 お尻(皮膚)   異物接触
 ;;;4 口(舌)                       吸う
-;;;5 口(声)                       声を出す
+;;;5 口(声)                       声を出す、泣く
 
 (defclass baby ()
   (
     (eyes   :initarg  :eyes   :accessor eyes) 
-    (skin   :initarg  :skin   :accessor skin)
     (inner  :initarg  :inner  :accessor inner)
-    (omutsu :initarg  :omutsu :accessor omutsu)
+    (skin   :initarg  :skin   :accessor skin)
+    (osiri  :initarg  :osiri  :accessor osiri)
+    (kuchi  :initarg  :kuchi  :accessor kuchi)
+    (nodo   :initarg  :nodo   :accessor nodo)
   )
+)
+;pretty print
+(defmethod pp ((b baby))
+  (format t "eyes: ~a, skin: ~a, inner: ~a, osiri: ~a, kuchi: ~a~%" (eyes b)(skin b)(inner b)(osirib))
 )
 
 ;; inner/空腹 → 泣く
 ;; 目/おっぱい →
 ;; おっぱい/
-(defmethod pp ((b baby))
-  (format t "eyes: ~a, skin: ~a, inner: ~a, omutsu: ~a~%" (eyes b)(skin b)(inner b)(omutsu b))
-)
-
 (defmethod change-omutsu ((b baby))
-  (setf (omutsu b) 'new)
+  (setf (osiri b) 'new)
 )
 
 (defmethod do-unchi ((b baby))
-  (setf (omutsu b) 'dart)
+  (setf (osiri b) 'dart)
 )
 
 (defmethod sence-inner ((b baby))
-  (or (eyes b) (skin b)(inner b)(not (equal (omutsu b)'new)))
+  (or (eyes b) (skin b)(inner b)(not (equal (osiri b)'new)))
 )
 
 (defun sence ()
@@ -141,7 +143,11 @@
 )
   
 (defmethod spend-time ((b body))
-  (setf (1
+  (o(sleep 10))
+)
 
 
-;(defvar b1 (make-instance 'baby :eyes nil :skin nil :inner nil :omutsu 'new))
+;(defvar b1 (make-instance 'baby :eyes nil :skin nil :inner nil :osiri 'new))
+
+
+
