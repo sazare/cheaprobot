@@ -1,0 +1,124 @@
+(load "load-m1-3.lisp")
+
+★データ
+(pova)
+*chikaku*=NIL, *sessyoku*=#<OMUTSU {7008A9FE93}>, *omutsu*=NEW-OMUTSU, *inofu*=5, *chou*=0, *oppai*=#<OPPAI {7008A9FF13}>(whos:MAMA)
+*baby*={eyes: NIL hip: #<OMUTSU {7008A9FE93}> inofu: 5 zensin: T eyes: NIL }
+NIL
+
+★おむつをつけている
+(po *hip-skin*)
+hip: #<OMUTSU {7008A9FE93}>
+NIL
+
+
+★なく
+(cry bb)
+cry with #<ZENSIN {7008A9F793}>
+NIL
+
+★おむつ交換
+(pova)
+*chikaku*=NIL, *sessyoku*=#<OMUTSU {7008A9FE93}>, *omutsu*=NEW-OMUTSU, *inofu*=5, *chou*=0, *oppai*=#<OPPAI {7008A9FF13}>(whos:MAMA)
+*baby*={eyes: NIL hip: #<OMUTSU {7008A9FE93}> inofu: 5 zensin: T eyes: NIL }
+NIL
+(change-omutsu)
+
+NEW-OMUTSU
+(pova)
+*chikaku*=NIL, *sessyoku*=#<OMUTSU {7008A9FE93}>, *omutsu*=NEW-OMUTSU, *inofu*=5, *chou*=0, *oppai*=#<OPPAI {7008A9FF13}
+
+(whos:MAMA)
+*baby*={eyes: NIL hip: #<OMUTSU {7008A9FE93}> inofu: 5 zensin: T eyes: NIL }
+NIL
+
+★うんちする
+ (do-unchi bb)
+
+0
+
+(pova)
+*chikaku*=NIL, *sessyoku*=#<OMUTSU {7008A9FE93}>, *omutsu*=DIRT-OMUTSU, *inofu*=5, *chou*=0, *oppai*=#<OPPAI {7008A9FF13}(whos:MAMA)
+*baby*={eyes: NIL hip: #<OMUTSU {7008A9FE93}> inofu: 5 zensin: T eyes: NIL }
+
+★おっぱいを出す
+ (put-oppai)
+
+#<OPPAI {7008A9FF13}>
+ (pova)
+*chikaku*=#<OPPAI {7008A9FF13}>, *sessyoku*=#<OMUTSU {7008A9FE93}>, *omutsu*=DIRT-OMUTSU, *inofu*=5, *chou*=0, *oppai*=#<OPPAI {7008A9FF13}>(whos:MAMA)
+*baby*={eyes: #<OPPAI {7008A9FF13}> hip: #<OMUTSU {7008A9FE93}> inofu: 5 zensin: T eyes: #<OPPAI {7008A9FF13}> }
+NIL
+
+
+★★ うんちして泣く
+(load "load-m1-3.lisp")
+
+T
+(pova)
+*chikaku*=NIL, *sessyoku*=#<OMUTSU {7008A8A913}>, *omutsu*=NEW-OMUTSU, *inofu*=5, *chou*=0, *oppai*=#<OPPAI {7008A8A9D3}(whos:MAMA)
+*baby*={eyes: NIL hip: #<OMUTSU {7008A8A913}> inofu: 5 zensin: T eyes: NIL }
+NIL
+
+(acycle bb)
+
+NIL
+ (do-unchi bb)
+
+0
+(acycle bb)
+cry with #<ZENSIN {7008A8A263}>
+NIL
+
+CL-USER(14): (po *omutsu*)
+hip-skin: DIRT-OMUTSU
+NIL
+CL-USER(15): (pova)
+*chikaku*=NIL, *sessyoku*=#<OMUTSU {7008A8A343}>, *omutsu*=DIRT-OMUTSU, *inofu*=5, *chou*=0, *oppai*=#<OPPAI {7008A8A3C3}>(whos:MAMA)
+*baby*={eyes: NIL hip: #<OMUTSU {7008A8A343}> inofu: 5 zensin: T eyes: NIL }
+NIL
+CL-USER(16): (acycle bb)
+cry with #<ZENSIN {7008A89C53}>
+NIL
+CL-USER(17): (pova)
+*chikaku*=NIL, *sessyoku*=#<OMUTSU {7008A8A343}>, *omutsu*=DIRT-OMUTSU, *inofu*=5, *chou*=0, *oppai*=#<OPPAI {7008A8A3C3}>(whos:MAMA)
+*baby*={eyes: NIL hip: #<OMUTSU {7008A8A343}> inofu: 5 zensin: T eyes: NIL }
+NIL
+CL-USER(18): (po *sessyoku*)
+hip: #<OMUTSU {7008A8A343}>
+NIL
+CL-USER(19): (po *omutsu*)
+hip-skin: DIRT-OMUTSU
+NIL
+CL-USER(20): (change-omutsu)
+
+NEW-OMUTSU
+CL-USER(21): (acycle bb)
+
+NIL
+
+★★ お腹減って泣いて、おっぱい飲む
+ゅ
+CL-USER(27): (sense bb)
+
+NIL
+CL-USER(28): (put-oppai)
+
+#<OPPAI {7008A8A3C3}>
+CL-USER(29): (sense bb)
+
+T
+CL-USER(30): (remove-oppai)
+
+NIL
+CL-USER(31): (sense bb)
+
+NIL
+CL-USER(32): (feel *inofu*)
+
+
+
+★★ おっぱいのんで泣き止む
+
+
+★★おっぱいのんで、やがてうんちがでる

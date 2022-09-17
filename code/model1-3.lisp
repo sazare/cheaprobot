@@ -1,174 +1,187 @@
 ;; a model for baby life cycle
 
+(defconstant new-omutsu 'new-omutsu)
+(defconstant dirt-omutsu 'dirt-omutsu)
 
 ;;;;; WHAT NAME IS THIS BABY?
 
 ;; objects outside of baby
-(defclass chikaku () 
-  (
-    (what :initform nil :accessor what)
-  )
+(defclass chikaku () (
+    (what :initform nil :accessor what))
 )
 
 (defparameter *chikaku* (make-instance 'chikaku))  ;; nil is nothing near
 
-(defclass omutsu ()
-  (
-    (kept :initform nil :accessor kept)
-  )
+;
+;
+(defclass omutsu () (
+    (kept :initform new-omutsu :accessor kept))
 )
  
-(defparameter *omutsu* (make-instance 'omutsu))   ;; nil is clear
+(defparameter *omutsu* (make-instance 'omutsu))   
 
-;; object in baby
+(defclass sessyoku () (
+    (what :initform *omutsu* :accessor what))
+)
+(defparameter *sessyoku* (make-instance 'sessyoku))
 
-(defclass inofu ()
-  (
-    (kept :initform 0 :accessor kept)
-  )
+;; object in baby's body
+
+(defclass inofu () (
+    (kept :initform 5 :accessor kept))
 )
 
 (defparameter *inofu* (make-instance 'inofu))      ;; 5 hours
 
-(defclass chou ()
-  (
-    (kept :initform 0 :accessor kept)
-  )
+(defclass chou () (
+    (kept :initform 0 :accessor kept))
 )
 
 (defparameter *chou* (make-instance 'chou))     ;; chou can keep  10 units.
 
 ;; sensible object outide of baby
-(defclass oppai ()())
+(defclass oppai ()(
+  (whos :initform 'mama :accessor whos))
+)
     
 (defparameter *oppai* (make-instance 'oppai))      ;; oppai can keep 6 units.
 
 ;; baby's 
-(defclass sensor ()
-  (
-    (target :initarg :target :accessor target)
-  )
+(defclass zensin () (
+  (whole :initform t :accessor kept))
+)
+
+(defparameter *zensin* (make-instance 'zensin))
+
+
+;; sensor
+(defclass sensor () (
+    (target :initarg :target :accessor target))
 )
 
 (defclass eyes (sensor) ())
-(defclass skin (sensor) ())
-(defclass inner (sensor) ())
+(defclass hip-skin (sensor) ())
+(defclass inside (sensor) ())
 
-(defclass baby ()
-  (
-    (eyes   :initform (make-instance 'eyes :target *chikaku*) :accessor eyes) 
-    (skin   :initform (make-instance 'skin :target *omutsu*)  :accessor skin)
-    (inner  :initform (make-instance 'inner :target *inofu*)  :accessor inner)
+(defparameter *eyes*     (make-instance 'eyes     :target *chikaku*))
+(defparameter *hip-skin* (make-instance 'hip-skin :target *sessyoku*))
+(defparameter *inside*   (make-instance 'inside   :target *inofu*))
 
-    (body   :initform (make-instance 'crier :target t)        :accessor body) ;; t is baby itself
-    (kuchi  :initform (make-instance 'sucker :target *chikaku*) :accessor kuchi)
+(defclass baby () (
+    (eyes     :initform *eyes*      :accessor eyes) 
+    (hip-skin :initform *hip-skin*  :accessor hip-skin)
+    (inside   :initform *inside*    :accessor inside)
+
+    (zensin   :initform *zensin*  :accessor zensin) ;; t is baby itself
+    (kuchi    :initform *chikaku* :accessor kuchi)
   )
 )
 
-;; actor card
-(defclass actor (sensor)
-  (
-    (towhat :initarg :towhat :accessor towhat)
-  )
-)
-
-(defclass crier (actor) ())
+;; actor
 
 (defmethod cry ((b baby))
-  (format t "baby cry! ~a~%" (body b))
-)
-
-(defclass sucker (actor) ())
-
-(defmethod suck ((b baby))
-  (incf (inner b))
-  (format t "baby suck ~a and baby's stomach is ~a~%" (kuchi b) (inner b))
+  (format t "cring ~a ~%" (kept (zensin b)))
 )
 
 ;; おむつ交換
 (defun change-omutsu ()
-  (setf (kept *omutsu*) 'new)
+  (setf (kept *omutsu*) new-omutsu)
+)
+
+(defun set-chou (d)
+  "for debugging"
+  (setf (kept *chou*) d)
 )
 
 (defmethod do-unchi ((b baby))
-  (setf (kept *omutsu*) 'dart)
-  (setf (kept *chou*) 0)
+  (let ()
+    (when (>= (kept *chou*) 10) 
+      (setf (kept *omutsu*) dirt-omutsu)
+      (setf (kept *chou*) 0)
+    )
+  )
 )
 
-
+;; sense 関係
 (defmethod do-sense ((b baby))
-  (or 
-    (target (eyes b))
-    (equal 'dirt (kept (target (skin b))))
-    (target (inner b))
+  (cond 
+    ((what (target (eyes b)))                                (what (target (eyes b))))
+    ((equal dirt-omutsu (kept (what (target (hip-skin b))))) (what (target (hip-skin b))))
+
+    ((eq 0 (kept (target (inside b))))                       (target (inside b))) ;;when empty return zouki itself;;  
   )
 )
 
 ;; 空腹知覚
-(defmethod inner ((b baby))
-  (<= (kept *inofu*) 0)
+(defmethod kufuku ((b baby))
+  (<= (kept (target (inside b))) 0)
 )
 
 ;; おっぱい見る
 (defmethod sense ((b baby))
-  (equal *oppai* (what *chikaku*))  ;;??? *oppai* identical in *chikaku* (maybe oppai is only one for the baby)
+  (equal *oppai* (what *chikaku*))  
 )
 
 
-;;; what is ku and what is kai 
+;;; what is ku and what is rak
 (defclass emotion () ())
 (defclass ku (emotion) ())
-(defclass kai (emotion) ())
+(defclass rak (emotion) ())
 
-;; emotion t is ku, nil is kai
-(defmethod emotion ((s chikaku)) nil)
-(defmethod emotion ((s omutsu)) t)
-(defmethod emotion ((s inofu)) (equal (kept s) 0))
+;; emotion t is ku, nil is rak
+(defparameter *feelnow* nil)
+
+(defmethod feel  ((s chikaku)) nil)
+(defmethod feel  ((s omutsu)) (equal dirt-omutsu (kept s)))
+(defmethod feel  ((s inofu)) (equal (kept s) 0))
+(defmethod feel  ((s oppai)) T)
 
 
 ;;泣く
 (defmethod cry ((b baby))
-  (when (body b) (format t "cry with ~a~%" (body b)))
+  (when (kept (zensin b)) (format t "cry with ~a~%" (zensin b)))
 )
 
 ;; 吸う
+(defmethod suck ((b baby))
+  (incf (kept *inofu*))
+)
 
+;; mother's act card
+(defun put-oppai ()
+  (setf (what *chikaku*) *oppai*)
+)
+
+(defun remove-oppai ()
+  (setf (what *chikaku*) nil)
+)
 
 ;; 赤ちゃんの生命サイクル
 (defmethod acycle ((b baby))
-  (let (s e)
+  (let (s)
     (setq s (do-sense b))
     (cond
       (s 
-        (setq e (emotion s))
+        (setq *feelnow* (feel s))
         (cond
-          ((and (equal e 'ku) (equal s *oppai*)) (suck b))
-          ((equal e 'ku) (cry b))
-         (t (format t "i can't act ~a at ~a~%" b e))
+          ((and *feelnow* (equal s *oppai*)) (suck b))
+          (*feelnow* (cry b))
+          (t (format t "i can't act ~a of ~a at ~a~%" b s *feelnow*))
         )
       )
-      (t (setf (what *chikaku*) nil))
+      (t (format t "i ca't act ~a of ~a at ~a ~%" b s *feelnow*))
     )
   )
 )
 
 
-;; external action
-;; mother's act card
-(defun put-oppai ()
-  (setf *chikaku* *oppai*)
-)
-
-(defun remove-oppai ()
-  (setq *chikaku* nil)
-)
-
-;; inner body automatic
+;; inside body automatic
 (defmethod sucked ((b baby))
   (setf (kept *inofu*) (incf (kept *inofu*)))
 )
 
-(defun auto-stomach ()
+
+(defun auto-body()
   (when (> (kept *inofu*) 0)
     (setf (kept *inofu*) (decf (kept *inofu*) ))
     (setf (kept *chou*)  (incf (kept *chou*)))
@@ -178,8 +191,5 @@
 
 (defparameter *baby* (make-instance 'baby))
 
-(defparameter b1 *baby*)
-
-
-
+(defparameter bb *baby*)
 
