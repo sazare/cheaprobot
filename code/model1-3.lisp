@@ -13,7 +13,6 @@
 (defparameter *chikaku* (make-instance 'chikaku))  ;; nil is nothing near
 
 ;
-;
 (defclass omutsu () (
     (kept :initform new-omutsu :accessor kept))
 )
@@ -28,23 +27,23 @@
 ;; object in baby's body
 
 (defclass inofu () (
-    (kept :initform 5 :accessor kept))
+    (kept :initform 0 :accessor kept))
 )
 
-(defparameter *inofu* (make-instance 'inofu))      ;; 5 hours
+(defparameter *inofu* (make-instance 'inofu))
 
 (defclass chou () (
     (kept :initform 0 :accessor kept))
 )
 
-(defparameter *chou* (make-instance 'chou))     ;; chou can keep  10 units.
+(defparameter *chou* (make-instance 'chou))
 
 ;; sensible object outide of baby
 (defclass oppai ()(
   (whos :initform 'mama :accessor whos))
 )
     
-(defparameter *oppai* (make-instance 'oppai))      ;; oppai can keep 6 units.
+(defparameter *oppai* (make-instance 'oppai))
 
 ;; baby's 
 (defclass zensin () (
@@ -77,30 +76,14 @@
   )
 )
 
+(defparameter *baby* (make-instance 'baby))
+
 ;; actor
-
-(defmethod cry ((b baby))
-  (format t "cring ~a ~%" (kept (zensin b)))
-)
-
 ;; おむつ交換
 (defun change-omutsu ()
   (setf (kept *omutsu*) new-omutsu)
 )
 
-(defun set-chou (d)
-  "for debugging"
-  (setf (kept *chou*) d)
-)
-
-(defmethod do-unchi ((b baby))
-  (let ()
-    (when (>= (kept *chou*) 10) 
-      (setf (kept *omutsu*) dirt-omutsu)
-      (setf (kept *chou*) 0)
-    )
-  )
-)
 
 ;; sense 関係
 (defmethod do-sense ((b baby))
@@ -112,41 +95,32 @@
   )
 )
 
+
 ;; 空腹知覚
-(defmethod kufuku ((b baby))
-  (<= (kept (target (inside b))) 0)
+(defmethod kufuku ((i inofu))
+  (<= (kept i) 0)
 )
-
-;; おっぱい見る
-(defmethod sense ((b baby))
-  (equal *oppai* (what *chikaku*))  
-)
-
 
 ;;; what is ku and what is rak
+;; emotion t is ku, nil is rak
 (defclass emotion () ())
 (defclass ku (emotion) ())
 (defclass rak (emotion) ())
 
-;; emotion t is ku, nil is rak
 (defparameter *feelnow* nil)
 
-(defmethod feel  ((s chikaku)) nil)
-(defmethod feel  ((s omutsu)) (equal dirt-omutsu (kept s)))
-(defmethod feel  ((s inofu)) (equal (kept s) 0))
-(defmethod feel  ((s oppai)) T)
+(defmethod feel ((s omutsu)) (equal dirt-omutsu (kept s)))
+(defmethod feel ((s inofu)) (equal (kept s) 0))
+(defmethod feel ((s oppai)) (kufuku *inofu*))
 
 
 ;;泣く
 (defmethod cry ((b baby))
-  (when (kept (zensin b)) (format t "cry with ~a~%" (zensin b)))
+  (format t "~%CRING!!! ~a ~%~%" (zensin b))
 )
+
 
 ;; 吸う
-(defmethod suck ((b baby))
-  (incf (kept *inofu*))
-)
-
 ;; mother's act card
 (defun put-oppai ()
   (setf (what *chikaku*) *oppai*)
@@ -156,40 +130,70 @@
   (setf (what *chikaku*) nil)
 )
 
-;; 赤ちゃんの生命サイクル
-(defmethod acycle ((b baby))
-  (let (s)
-    (setq s (do-sense b))
-    (cond
-      (s 
-        (setq *feelnow* (feel s))
-        (cond
-          ((and *feelnow* (equal s *oppai*)) (suck b))
-          (*feelnow* (cry b))
-          (t (format t "i can't act ~a of ~a at ~a~%" b s *feelnow*))
-        )
-      )
-      (t (format t "i ca't act ~a of ~a at ~a ~%" b s *feelnow*))
-    )
+;;吸う
+(defmethod suck ((b baby))
+  (let ()
+    (setf (kept *inofu*) (+ (kept *inofu*) 5))
+    (when (>= (kept *inofu*) 10) (remove-oppai))
   )
 )
 
 
 ;; inside body automatic
-(defmethod sucked ((b baby))
-  (setf (kept *inofu*) (incf (kept *inofu*)))
+;; 体内の進行
+(defun do-digest ()
+  (let ()
+    (unless (kufuku *inofu*)
+      (setf (kept *chou*)  (+ (kept *chou*) 1))
+      (setf (kept *inofu*) (- (kept *inofu*) 1))
+    )
+  )
 )
 
-
-(defun auto-body()
-  (when (> (kept *inofu*) 0)
-    (setf (kept *inofu*) (decf (kept *inofu*) ))
-    (setf (kept *chou*)  (incf (kept *chou*)))
+(defun do-unchi ()
+  (when (>= (kept *chou*) 10)  
+    (setf (kept *omutsu*) dirt-omutsu)
+    (setf (kept *chou*) 0)
   )
 )
 
 
-(defparameter *baby* (make-instance 'baby))
+(defun auto-body ()
+  (let ()
+    (do-digest)
+    (do-unchi)
+  )
+)
 
-(defparameter bb *baby*)
+;; おっぱい見る
+(defmethod see-oppai((c chikaku))
+  (equal *oppai* (what c))
+)
+
+;; 赤ちゃんの生命サイクル
+(defmethod bcycle ((b baby))
+  (let (s)
+    (auto-body) 
+    (setq s (do-sense b))
+    (cond
+      (s 
+        (setf *feelnow* (feel s))
+        (cond
+          ((and (kufuku *inofu*) (see-oppai *chikaku*))       (suck b))
+          ((and (<= (kept *inofu*) 10)(see-oppai *chikaku*))  (suck b))
+          (*feelnow*                                          (cry b))
+          (t (format t "something unhappy things occured ~a of ~a at ~a~%" b s *feelnow*))
+        )
+      )
+      (t (format t "the baby is good. everything ok. feelnow=~a~%" *feelnow* ))
+    )
+  )
+)
+
+;; for debugging
+(defun set-chou (d)
+  "for debugging"
+  (setf (kept *chou*) d)
+)
+
 

@@ -52,8 +52,8 @@
 
 
 (defun pova ()
-  (format t "*chikaku*=~a, *sessyoku*=~a, *omutsu*=~a, *inofu*=~a, *chou*=~a, *oppai*=~a(whos:~a)~%"
-             (what *chikaku*) (what *sessyoku*) (kept *omutsu*) (kept *inofu*) (kept *chou*) *oppai* (whos *oppai*))
+  (format t "*chikaku*=~a, *sessyoku*=~a, *omutsu*=~a, *inofu*=~a, *chou*=~a, *oppai*=~a(whos:~a) feelnow=~a~%"
+             (what *chikaku*) (what *sessyoku*) (kept *omutsu*) (kept *inofu*) (kept *chou*) *oppai* (whos *oppai*) *feelnow*)
   (format t "*baby*=")
   (po *baby*)
 )

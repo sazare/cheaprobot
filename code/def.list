@@ -1,0 +1,84 @@
+CLASS
+ baby 
+
+ sensor 
+   eyes (sensor) 
+    chikaku 
+     oppai
+  
+   hip-skin (sensor) 
+    sessyoku 
+     omutsu 
+  
+   inside (sensor) 
+    inofu 
+    chou 
+
+
+ emotion 
+   ku (emotion) 
+   rak (emotion) 
+
+; imaginary target of actions/cry 
+  zensin 
+
+CONSTANT
+ FWORDS '((nil "無")(t "苦")))
+ dirt-omutsu 'dirt-omutsu
+ new-omutsu 'new-omutsu
+
+PARAM
+ *baby* (make-instance 'baby))
+
+ *eyes*     (make-instance 'eyes     :target *chikaku*))
+ *chikaku* (make-instance 'chikaku))  ;; nil is nothing near
+ *oppai* (make-instance 'oppai))      ;; oppai can keep 6 units.
+
+ *hip-skin* (make-instance 'hip-skin :target *sessyoku*))
+ *sessyoku* (make-instance 'sessyoku))
+ *omutsu* (make-instance 'omutsu))   
+
+ *inside*   (make-instance 'inside   :target *inofu*))
+ *inofu* (make-instance 'inofu))      ;; 5 hours
+ *chou* (make-instance 'chou))     ;; chou can keep  10 units.
+
+ *zensin* (make-instance 'zensin))
+ *feelnow*
+
+;; for easy doing
+ bb *baby*)
+
+METHOD
+ bcycle ((b baby))
+
+; baby action
+ cry ((b baby))
+ suck ((b baby))
+
+; baby sense and feel
+ do-sense ((b baby))
+
+ feel  ((s chikaku)) nil)
+ feel  ((s inofu)) (equal (kept s) 0))
+ feel  ((s omutsu)) (equal dirt-omutsu (kept s)))
+ feel  ((s oppai)) T)
+
+
+;; hidden action
+ kufuku ((b baby))
+ see-oppai((b baby))
+
+FUNC
+; inside of body
+ auto-body ()
+ do-digest ()
+ do-unchi ()
+
+; external action
+ change-omutsu ()
+ put-oppai ()
+ remove-oppai ()
+
+;debug
+ set-chou (d)
+ words (f) (cadr (assoc f FWORDS)))

@@ -1,4 +1,20 @@
-(load "load-m1-3.lisp")
+
+
+(trace do-sense)
+(trace do-digest)
+(trace do-unchi)
+(trace bcycle)
+(trace auto-body)
+(trace feel)
+(trace cry)
+(trace suck)
+
+;repeat until cring
+(pova) 
+(bcycle bb)(pova)
+
+
+
 
 ★データ
 (pova)
