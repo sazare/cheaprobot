@@ -5,6 +5,7 @@
   (po (eyes b))
   (po (hip-skin b))
   (po (inside b))
+  (po (zensin b))
   (po (kuchi b))
   (format t "}")
 )
@@ -41,8 +42,8 @@
   (format t "chou: ~a " (kept c))
 )
 
-(defmethod po ((k kuchi))
-  (format t "kuchi.baby: ~a " k)
+(defmethod po ((z zensin))
+  (format t "zensin: ~a " (kept z))
 )
 
 (defmethod po ((i inofu))

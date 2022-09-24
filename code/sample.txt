@@ -9,10 +9,69 @@
 (trace cry)
 (trace suck)
 
+
 ;repeat until cring
 (pova) 
 (bcycle bb)(pova)
 
+(load "run-m1-3.lisp")
+
+★ ケース
+(setf (kept *omutsu*) dirt-omutsu)
+(put-oppai)
+(setf (kept *inofu*) 0)
+(setf (kept *chou*) 5)
+
+ここで、おっぱいあり、胃空、おむつ汚れになる。
+*chou*は関係させても仕方ないので5。
+
+ (pova)
+*chikaku*=#<OPPAI {7008A9F203}>, *sessyoku*=#<OMUTSU {7008A9F0D3}>, *omutsu*=DIRT-OMUTSU, *inofu*=0, *chou*=5, *oppai*=#<OPPAI {7008A9F203}>(whos:MAMA) feelnow=NIL
+*baby*={eyes: #<OPPAI {7008A9F203}> hip: #<OMUTSU {7008A9F0D3}> inofu: 0 kuchi.baby: #<KUCHI {7008A9E553}> }
+NIL
+
+ここでbcycleする
+
+CL-USER(88): (bcycle bb)(pova)
+action to oppai
+suck milk by #<KUCHI {7008A9E553}>
+
+NIL
+CL-USER(89): *chikaku*=#<OPPAI {7008A9F203}>, *sessyoku*=#<OMUTSU {7008A9F0D3}>, *omutsu*=DIRT-OMUTSU, *inofu*=5, *chou*=5, *oppai*=#<OPPAI {7008A9F203}>(whos:MAMA) feelnow=NIL
+*baby*={eyes: #<OPPAI {7008A9F203}> hip: #<OMUTSU {7008A9F0D3}> inofu: 5 kuchi.baby: #<KUCHI {7008A9E553}> }
+NIL
+
+まず、おっぱいを吸う
+
+CL-USER(90): (bcycle bb)(pova)
+action to oppai
+suck milk by #<KUCHI {7008A9E553}>
+
+NIL
+CL-USER(91): *chikaku*=#<OPPAI {7008A9F203}>, *sessyoku*=#<OMUTSU {7008A9F0D3}>, *omutsu*=DIRT-OMUTSU, *inofu*=9, *chou*=6, *oppai*=#<OPPAI {7008A9F203}>(whos:MAMA) feelnow=NIL
+*baby*={eyes: #<OPPAI {7008A9F203}> hip: #<OMUTSU {7008A9F0D3}> inofu: 9 kuchi.baby: #<KUCHI {7008A9E553}> }
+NIL
+CL-USER(92): (bcycle bb)(pova)
+action to oppai
+suck milk by #<KUCHI {7008A9E553}>
+
+NIL
+CL-USER(93): *chikaku*=NIL, *sessyoku*=#<OMUTSU {7008A9F0D3}>, *omutsu*=DIRT-OMUTSU, *inofu*=13, *chou*=7, *oppai*=#<OPPAI {7008A9F203}>(whos:MAMA) feelnow=NIL
+*baby*={eyes: NIL hip: #<OMUTSU {7008A9F0D3}> inofu: 13 kuchi.baby: #<KUCHI {7008A9E553}> }
+
+のみつづけて、
+CL-USER(94): (bcycle bb)(pova)
+
+CRING!!! with #<KUCHI {7008A9E553}>
+
+NIL
+CL-USER(95): *chikaku*=NIL, *sessyoku*=#<OMUTSU {7008A9F0D3}>, *omutsu*=DIRT-OMUTSU, *inofu*=12, *chou*=8, *oppai*=#<OPPAI {7008A9F203}>(whos:MAMA) feelnow=KU
+*baby*={eyes: NIL hip: #<OMUTSU {7008A9F0D3}> inofu: 12 kuchi.baby: #<KUCHI {7008A9E553}> }
+NIL
+
+満足しておっぱいから離れると、おむつの汚れに気づいて泣く
+
+たまたま、乳飲むのが先に選ばれている
 
 
 

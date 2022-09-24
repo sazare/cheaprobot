@@ -45,15 +45,12 @@
     
 (defparameter *oppai* (make-instance 'oppai))
 
-;; actor do something for our  baby
-(defclass actor () ())
-
 ;; baby's 
-(defclass kuchi (actor) (
-  (sita  :initform "kuchi/sita" :accessor sita))
+(defclass zensin () (
+  (whole :initform t :accessor kept))
 )
 
-(defparameter *kuchi* (make-instance 'kuchi))
+(defparameter *zensin* (make-instance 'zensin))
 
 
 ;; sensor
@@ -70,79 +67,60 @@
 (defparameter *inside*   (make-instance 'inside   :target *inofu*))
 
 (defclass baby () (
-    ;(sensors  :initform  '(*eyes* *hip-skin* *inside*) :accessor sensors)
-    (inside   :initform *inside*    :accessor inside)
-    (hip-skin :initform *hip-skin*  :accessor hip-skin)
     (eyes     :initform *eyes*      :accessor eyes) 
+    (hip-skin :initform *hip-skin*  :accessor hip-skin)
+    (inside   :initform *inside*    :accessor inside)
 
-    (kuchi    :initform *kuchi* :accessor kuchi)
+    (zensin   :initform *zensin*  :accessor zensin) ;; t is baby itself
+    (kuchi    :initform *chikaku* :accessor kuchi)
   )
 )
 
 (defparameter *baby* (make-instance 'baby))
 
-;; external action
+;; actor
 ;; おむつ交換
 (defun change-omutsu ()
   (setf (kept *omutsu*) new-omutsu)
 )
 
 
-
 ;; sense 関係
 (defmethod do-sense ((b baby))
   (cond 
-    ((eq 0 (kept (target (inside b))))                       (target (inside b))) ;;when empty return zouki itself;;  
+    ((what (target (eyes b)))                                (what (target (eyes b))))
     ((equal dirt-omutsu (kept (what (target (hip-skin b))))) (what (target (hip-skin b))))
 
-    ((what (target (eyes b)))                                (what (target (eyes b))))
+    ((eq 0 (kept (target (inside b))))                       (target (inside b))) ;;when empty return zouki itself;;  
   )
 )
 
-;;; actions
-(defmethod cry ((k kuchi))
-  (format t "cry by kuchi~%")
-)
 
+;; 空腹知覚
+(defmethod kufuku ((i inofu))
+  (<= (kept i) 0)
+)
 
 ;;; what is ku and what is ka
 ;; emotion t is ku, nil is ka
 (defclass emotion () ())
 ; ku = 苦
 (defclass ku (emotion) ())
-(defun isku (e) (equal e :ku))
-
 ; ka = kai = 快
 (defclass ka (emotion) ())
-(defun iska (e) (equal e :ka))
-
-;; and emotion 
-(defun eand (e1 e2)
-  (cond
-    ((eq e1 :ka) :ka)
-    ((eq e2 :ka) :ka)
-    (t :ku)
-  )
-)
-
-(defmethod feel ((s omutsu)) 
-  (if (equal dirt-omutsu (kept s)) :ku :ka)
-)
-
-;; 空腹知覚
-(defmethod  kufuku ((i inofu))
-  (<= (kept i) 0) 
-)
-
-(defmethod feel((i inofu))
-  (if (<= (kept i) 0) :ku :ka)
-)
-
-(defmethod feel((o oppai))
-  (format t "good for oppai~%")
-)
 
 (defparameter *feelnow* nil)
+
+(defmethod feel ((s omutsu)) (equal dirt-omutsu (kept s)))
+(defmethod feel ((s inofu)) (equal (kept s) 0))
+(defmethod feel ((s oppai)) (kufuku *inofu*))
+
+
+;;泣く
+(defmethod cry ((b baby))
+  (format t "~%CRING!!! ~a ~%~%" (zensin b))
+)
+
 
 ;; 吸う
 ;; mother's act card
@@ -154,20 +132,11 @@
   (setf (what *chikaku*) nil)
 )
 
-;;泣く
-;;泣く
-(defmethod cry ((k kuchi))
-  (format t "~%CRING!!! with ~a inofu=~a, chou=~a, omutsu=~a~%~%" k (kept *inofu*) (kept *chou*) (kept *omutsu*) )
-)
-
 ;;吸う
-(defmethod suck ((k kuchi))
+(defmethod suck ((b baby))
   (let ()
     (setf (kept *inofu*) (+ (kept *inofu*) 5))
-    (when (>= (kept *inofu*) 10) 
-      (remove-oppai)
-      (format t "reject oppai, enough~%"))
-    (format t "suck milk by ~a~%~%" k)
+    (when (>= (kept *inofu*) 10) (remove-oppai))
   )
 )
 
@@ -212,13 +181,13 @@
       (s 
         (setf *feelnow* (feel s))
         (cond
-          ((and (feel *inofu*) (see-oppai *chikaku*))         (suck *kuchi*))
-          ((and (<= (kept *inofu*) 10)(see-oppai *chikaku*))  (suck *kuchi*))
-          ((isku *feelnow*)                                   (cry *kuchi*))
+          ((and (kufuku *inofu*) (see-oppai *chikaku*))       (suck b))
+          ((and (<= (kept *inofu*) 10)(see-oppai *chikaku*))  (suck b))
+          (*feelnow*                                          (cry b))
           (t (format t "something unhappy things occured ~a of ~a at ~a~%" b s *feelnow*))
         )
       )
-      (t (format t "the baby is good. everything ok. inofu=~a, chou=~a, feelnow=~a~%" (kept *inofu*) (kept *chou*) *feelnow* ))
+      (t (format t "the baby is good. everything ok. feelnow=~a~%" *feelnow* ))
     )
   )
 )

@@ -2,9 +2,9 @@
 
 ;; baby is born
 
-(load "load-m1-3.lisp")
+;(load "load-m1-3.lisp")
 
-(defparameter bb *baby*)
+;(defparameter bb *baby*)
 
 (pova)
 (bcycle bb)(pova)
