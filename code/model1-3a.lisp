@@ -1,4 +1,4 @@
-;; a model for baby life cycle
+;; a model for baby life cycle (model1-3a.lisp)
 
 (defconstant new-omutsu 'new-omutsu)
 (defconstant dirt-omutsu 'dirt-omutsu)
